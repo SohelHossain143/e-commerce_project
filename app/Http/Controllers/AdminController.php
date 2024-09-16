@@ -85,5 +85,10 @@ class AdminController extends Controller
     } //  end method
 
 
+    public function admincustomerlist()
+    {
+        return view('admin.customer.admin_cestomer_list');
+    }
+
 
 }
