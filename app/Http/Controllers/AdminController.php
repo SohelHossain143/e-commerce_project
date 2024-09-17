@@ -91,4 +91,20 @@ class AdminController extends Controller
     }
 
 
+    public function admincategorielist()
+    {
+        return view('admin.categorie.admin_categorie_list');
+    }
+
+
+    public function adminproductlist()
+    {
+        return view('admin.product.admin_product_list');
+    }
+
+
+
+    
+
+
 }

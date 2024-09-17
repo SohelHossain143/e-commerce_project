@@ -10,7 +10,15 @@
       <div class="card">
         <div class="card-body">
           <div class="d-flex justify-content-between align-items-baseline mb-2">
-            <h6 class="card-title mb-0">Customer list</h6>
+
+            <h6 class="card-title mb-0">Product list</h6>
+
+            <a href="{{ route('admin.categorie.list') }}">
+                <button>
+                    <h5>Categorie</h5>
+                </button>
+            </a>
+
           </div>
           <div class="table-responsive">
             <table class="table table-hover mb-0">
@@ -85,6 +93,4 @@
 
 
 @endsection
-
-
 
