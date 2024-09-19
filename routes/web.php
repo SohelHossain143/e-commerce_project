@@ -40,9 +40,21 @@ Route::middleware(['auth', 'role:admin'])->group(function () {
 
     Route::get('/customer-list', [AdminController::class, 'admincustomerlist'])->name('admin.customer.list'); 
 
-    Route::get('/categorie-list', [AdminController::class, 'admincategorielist'])->name('admin.categorie.list');
+    //admin categorye list
+
+    Route::get('/category-list', [AdminController::class, 'admincategorylist'])->name('admin.category.list');
+
+    Route::get('/add-category', [AdminController::class, 'adminaddcategory'])->name('admin.add.category');
+
+    Route::get('/edit-category', [AdminController::class, 'admineditcategory'])->name('admin.edit.category');
+
+    //admin Product list
 
     Route::get('/product-list', [AdminController::class, 'adminproductlist'])->name('admin.product.list');
+
+    Route::get('/add-product', [AdminController::class, 'adminaddproduct'])->name('admin.add.product');
+
+    Route::get('/edit-product', [AdminController::class, 'admineditproduct'])->name('admin.edit.product');
 
 
 });

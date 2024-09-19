@@ -5,89 +5,99 @@
 
 <div class="page-content">
 
-<div class="row">
-    <div class="col-12 stretch-card">
-      <div class="card">
+
+<nav class="page-breadcrumb">
+    <ol class="breadcrumb">
+        <li class="breadcrumb-item"><a href="">Product list</a></li>
+        <li class="breadcrumb-item active" aria-current="page">Product List</li>
+    </ol>
+</nav>
+
+<div class="col-12 grid-margin stretch-card">
+    <div class="card">
         <div class="card-body">
-          <div class="d-flex justify-content-between align-items-baseline mb-2">
+            <div class="d-flex justify-content-between allign-items-center mb-4">
+                <h6 class="card-title">Product List</h6>
+                <a href="" class="btn btn-primary">Add Product</a>
+            </div>
 
-            <h6 class="card-title mb-0">Product list</h6>
+            <div class="mb-4">
+              <h6 class="card-title">product Categorye</h6>
+              <div class="d-flex flex-wrap gap-2">
+                <!-- Product Categories -->
 
-            <a href="{{ route('admin.categorie.list') }}">
-                <button>
-                    <h5>Categorie</h5>
-                </button>
-            </a>
+                @foreach ($categories as $category)
+                <div class="p-2 bg-light border rounded">
+                  {{ $category->category_name }}
+                  <span class="badge bg-primary">{{ $category->product->count() }}</span>
+                </div>
+                @endforeach
+                
+              </div>
 
-          </div>
-          <div class="table-responsive">
-            <table class="table table-hover mb-0">
-              <thead>
-                <tr>
-                  <th class="pt-0">Order Id</th>
-                  <th class="pt-0">Customer</th>
-                  <th class="pt-0">Product</th>
-                  <th class="pt-0">Amount</th>
-                  <th class="pt-0">Status</th>
-                </tr>
-              </thead>
-              <tbody>
-                <tr>
-                  <td>1</td>
-                  <td>Fahim</td>
-                  <td>Leather bag</td>
-                  <td>$98.00</td>
-                  <td><span class="badge bg-success">Paid</span></td>
-                </tr>
-                <tr>
-                  <td>2</td>
-                  <td>Mahim</td>
-                  <td>Fashion jeket</td>
-                  <td>$55.00</td>
-                  <td><span class="badge bg-danger">Pending</span></td>
-                </tr>
-                <tr>
-                  <td>3</td>
-                  <td>Likhon</td>
-                  <td>Cotton tops</td>
-                  <td>$85.00</td>
-                  <td><span class="badge bg-danger">Unpaid</span></td>
-                </tr>
-                <tr>
-                  <td>4</td>
-                  <td>Bijoy</td>
-                  <td>Black half shirt</td>
-                  <td>$50.00</td>
-                  <td><span class="badge bg-danger">Unpaid</span></td>
-                </tr>
-                <tr>
-                  <td>5</td>
-                  <td>Rahim</td>
-                  <td>Leather shoe</td>
-                  <td>$60.00</td>
-                  <td><span class="badge bg-danger">Unpaid</span></td>
-                </tr>
-                <tr>
-                  <td>6</td>
-                  <td>Karim</td>
-                  <td>Leather bag</td>
-                  <td>$98.00</td>
-                  <td><span class="badge bg-success">Paid</span></td>
-                </tr>
-                <tr>
-                  <td class="border-bottom">7</td>
-                  <td class="border-bottom">Hasem</td>
-                  <td class="border-bottom">Fashion jeket</td>
-                  <td class="border-bottom">$55.00</td>
-                  <td class="border-bottom"><span class="badge bg-danger">Pending</span></td>
-                </tr>
-              </tbody>
-            </table>
-          </div>
+            </div>
+
+              <!-- Product Table -->
+             <div class="table-responsive">
+              <table id="dataTableExample" class="table table-hover text-center">
+                <thead class="table-primary">
+                  <tr>
+                    <th class="text-center">#</th>
+                    <th class="text-center">Image</th>
+                    <th class="text-center">Name</th>
+                    <th class="text-center">Category</th>
+                    <th class="text-center">Price</th>
+                    <th class="text-center">Stock</th>
+                    <th class="text-center">Action</th>
+                  </tr>
+
+                </thead>
+                <tbody>
+                  @foreach ($products as $product)
+                  <tr>
+                    <td class="text-center">{{ $loop->iteration }}</td>
+                    <td class="text-center">
+                      <img src="" 
+                      alt="Product Image" style="width: 50px; height: 50px">
+
+                    </td>
+
+                    <td class="text-center">{{ $product->name }}</td>
+                    <td class="text-center">{{ $product->category->category_name }}</td>
+                    <td class="text-center">{{ $product->price }}</td>
+                    <td class="text-center">{{ $product->stock }}</td>
+                    <td class="text-center">
+                      <a href="" class="btn btn-info btn-sm"><i class="fas fa-edit"></i> Edit</a>
+                      <form action="" method="POST" class="d-inline-block" onsubmit="return confirm('')">
+                        @csrf
+                        @method('DELETE')
+                        <button type="submit" class="btn btn-danger btn-sm"><i class="fas fa-trash-alt"></i> Delete</button>
+
+                      </form>
+
+                    </td>
+
+                  </tr>
+                  @endforeach
+                </tbody>
+
+              </table>
+
+             </div>
+
+               <!-- End Product Table -->
+
+
+
+
+
         </div>
-      </div>
     </div>
-  </div>
+</div>
+
+
+
+
 
 </div>
 

@@ -87,19 +87,41 @@ class AdminController extends Controller
 
     public function admincustomerlist()
     {
-        return view('admin.customer.admin_cestomer_list');
+        return view('admin.customer.admin_customer_list');
     }
 
 
-    public function admincategorielist()
+    public function admincategorylist()
     {
-        return view('admin.categorie.admin_categorie_list');
+        return view('admin.category.admin_category_list');
     }
+
+
+    public function adminaddcategory()
+    {
+        return view('admin.category.admin_add_category');   
+    }
+
+    public function admineditcategory()
+    {
+        return view('admin.category.admin_edit_category');   
+    }
+
 
 
     public function adminproductlist()
     {
         return view('admin.product.admin_product_list');
+    }
+
+    public function adminaddproduct()
+    {
+        return view('admin.product.admin_add_product');
+    }
+
+    public function admineditproduct()
+    {
+        return view('admin.product.admin_edit_product');
     }
 
 
