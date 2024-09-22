@@ -85,16 +85,87 @@ class AdminController extends Controller
     } //  end method
 
 
+
+
+
+      //adamin customer 
+
     public function admincustomerlist()
     {
         return view('admin.customer.admin_customer_list');
     }
 
 
+
+
+
+
+      //admin product category 
+
     public function admincategorylist()
     {
-        return view('admin.category.admin_category_list');
+        $categories = Category::all();
+        return view('admin.category.admin_category_list', compact('categories'));
     }
+
+    // public function admincategorystoer(Request $request)
+    // {
+    //     $validatedInput = $request->validate([
+    //         'photo' => 'nullable|image|mimes:jpeg,png,jpg,gif,webp|max:2048',
+    //         'category_name' => 'requried|string|max:255',
+    //     ]);
+
+    //     if ($request->hasfile('photo')) {
+    //         $photo = $request->file('photo');
+    //         $photoName = date('YmdHi') . $photo->getClientsOriginlName();
+    //         $photo->move(public_path('upload/admin_images')). $photoName;
+    //         $validatedInput['photo'] = $photoName;
+    //     }
+
+    //     Category::create($validatedInput);
+
+    //     $notification = array(
+    //         'message' => 'Product Category added Successfully',
+    //         'alert-type' => 'success'
+    //     );
+
+    //     return redirect()->route('admin.category.list')->with($notification);
+
+
+    // }
+
+
+    public function admincategorystoer(Request $request)
+    {
+            // Validate the input
+        $validatedInput = $request->validate([
+            'photo' => 'nullable|image|mimes:jpeg,png,jpg,gif,webp|max:2048',
+            'category_name' => 'required|string|max:255',  // Corrected 'requried' to 'required'
+        ]);
+
+               // Check if a photo file is uploaded
+        if ($request->hasFile('photo')) {
+            $photo = $request->file('photo');
+                 // Use the correct method to get the original file name
+            $photoName = date('YmdHi') . $photo->getClientOriginalName();
+                 // Correct concatenation and move file to the public directory
+            $photo->move(public_path('upload/admin_images'), $photoName);
+            $validatedInput['photo'] = $photoName;
+        }
+
+                 // Create the category with validated data
+        Category::create($validatedInput);
+
+                 // Set up a notification for the user
+        $notification = array(
+            'message' => 'Product Category added successfully',
+            'alert-type' => 'success'
+        );
+
+               // Redirect with notification
+        return redirect()->route('admin.category.list')->with($notification);
+    }
+
 
 
     public function adminaddcategory()
@@ -102,30 +173,197 @@ class AdminController extends Controller
         return view('admin.category.admin_add_category');   
     }
 
-    public function admineditcategory()
+    public function admineditcategory($id)
     {
-        return view('admin.category.admin_edit_category');   
+        $category = Category::findOrFail($id);
+        return view('admin.category.admin_edit_category', compact('category'));   
     }
 
 
+    public function adminupdatecategory(Request $request, $id)
+    {
+        $validatedInput = $request->validate([
+            'photo' => 'nullable|image|mimes:jpeg,png,jpg,gif,webp|max:2048',
+            'category_name' => 'required|string|max:255',  // Corrected 'requried' to 'required'
+        ]);
+
+               // Check if a photo file is uploaded
+        if ($request->hasFile('photo')) {
+            $photo = $request->file('photo');
+            $photoName = date('YmdHi') . $photo->getClientOriginalName();
+            $photo->move(public_path('upload/admin_images'), $photoName);
+            $validatedInput['photo'] = $photoName;
+        }
+
+        $category = Category::findOrFail($id);
+        $category->update($validatedInput);
+
+                 // Set up a notification for the user
+        $notification = array(
+            'message' => 'Product Category update successfully',
+            'alert-type' => 'success'
+        );
+
+               // Redirect with notification
+        return redirect()->route('admin.category.list')->with($notification);
+    }
+
+     
+    public function admindeletecategory($id)
+    {
+        $category = Category::findOrFail($id);
+        $category->delete();
+
+        return redirect()->route('admin.category.list')->with([
+            'message' => 'Product Category update successfully',
+            'alert-type' => 'success'
+        ]);
+    }
+
+
+
+
+
+
+    //admin product 
 
     public function adminproductlist()
     {
-        return view('admin.product.admin_product_list');
+        $categories = Category::all();
+        $products = Product::all();
+        return view('admin.product.admin_product_list', compact('products', 'categories'));
     }
+
+
+    // public function adminproductstoer(Request $request)
+    // {
+    //     $validatedInput = $request->validate([
+    //         'photo' => 'nullable|image|mimes:jpeg,png,jpg,gif,webp|max:2048',
+    //         'category_id' => 'requried|exists:categories,id',
+    //         'name' => 'required|string|max:255',
+    //         'price' => 'required|integer|min:0',
+    //         'stock' => 'required|integer|min:0',
+    //         'description' => 'required|string|max:255',
+    //     ]);
+
+    //     if ($request->hasfile('photo')) {
+    //         $photo = $request->file('photo');
+    //         $photoName = date('YmdHi') . $photo->getClientsOriginlName();
+    //         $photo->move(public_path('upload/admin_images')). $photoName;
+    //         $validatedInput['photo'] = $photoName;
+    //     }
+
+    //     Product::create($validatedInput);
+
+    //     return redirect()->back()->with([
+    //         'message' => 'Product Added Successfully',
+    //         'alert-type' => 'success'
+    //     ]);
+    // }
+
+    public function adminproductstoer(Request $request)
+{
+    $validatedInput = $request->validate([
+        'photo' => 'nullable|image|mimes:jpeg,png,jpg,gif,webp|max:2048',
+        'category_id' => 'required|exists:categories,id', // Corrected 'requried' to 'required'
+        'name' => 'required|string|max:255',
+        'price' => 'required|integer|min:0',
+        'stock' => 'required|integer|min:0',
+        'description' => 'required|string|max:255',
+    ]);
+
+    if ($request->hasFile('photo')) {
+        $photo = $request->file('photo');
+        $photoName = date('YmdHi') . $photo->getClientOriginalName(); // Corrected 'getClientsOriginlName' to 'getClientOriginalName'
+        $photo->move(public_path('upload/admin_images'), $photoName); // Fixed syntax for move function
+        $validatedInput['photo'] = $photoName;
+    }
+
+    Product::create($validatedInput);
+
+    return redirect()->back()->with([
+        'message' => 'Product Added Successfully',
+        'alert-type' => 'success'
+    ]);
+    }
+
+
 
     public function adminaddproduct()
     {
-        return view('admin.product.admin_add_product');
+
+        $categories = Category::all();
+        return view('admin.product.admin_add_product', compact('categories'));
     }
 
-    public function admineditproduct()
+    
+
+    // public function admineditproduct()
+    // {
+    //     $categories = Category::all();
+    //     $product = Product::findOrFail($id);
+    //     return view('admin.product.admin_edit_product', compact('product', 'categories'));
+    // }
+
+    public function admineditproduct($id)
     {
-        return view('admin.product.admin_edit_product');
+        // Fetch all categories
+        $categories = Category::all();
+    
+        // Find the product by its ID
+        $product = Product::findOrFail($id);
+    
+        // Return the view with product and categories data
+        return view('admin.product.admin_edit_product', compact('product', 'categories'));
     }
 
 
 
+    public function adminupdateproduct(Request $request, $id)
+    {
+        $validatedInput = $request->validate([
+            'photo' => 'nullable|image|mimes:jpeg,png,jpg,gif,webp|max:2048',
+            'category_id' => 'required|exists:categories,id',
+            'name' => 'required|string|max:255',
+            'price' => 'required|integer|min:0',
+            'stock' => 'required|integer|min:0',
+            'description' => 'required|string',
+        ]);
+
+        if ($request->hasfile('photo')) {
+            $photo = $request->file('photo');
+            $photoName = date('YmdHi') . $photo->getClientsOriginlName();
+            $photo->move(public_path('upload/admin_images')). $photoName;
+            $validatedInput['photo'] = $photoName;
+        }
+
+        $product = Product::findOrFail($id);
+        $product->update($validatedInput);
+
+        return redirect()->back()->with([
+            'message' => 'Product Updated Successfully',
+            'alert-type' => 'success'
+        ]);
+    }
+
+
+    public function admindeleteproduct($id)
+    {
+        $product = Product::findOrFail($id);
+        $product->delete();
+
+        return redirect()->route('admin.product.list')->with([
+            'message' => 'Product delete Successfully',
+            'alert-type' => 'success'
+        ]);
+    }
+
+
+    public function adminviewproduct($id)
+    {
+        $product = Product::findOrFail($id);
+        return view('admin.product.admin_single_product', compact('product'));
+    }
     
 
 

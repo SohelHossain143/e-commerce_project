@@ -3,6 +3,10 @@
 
 @section('admin')
 
+<!-- Loading jQuery from Google CDN -->
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+
+
 <div class="page-content">
 <nav class="page-breadcrumb">
     <ol class="breadcrumb">
@@ -18,7 +22,7 @@
             <div class="card-body">
                 <h4 class="card-title">Add Product Category</h4>
 
-                <form action="" method="POST" enctype="multipart/form-data">
+                <form action="{{ route('admin.category.store') }}" method="POST" enctype="multipart/form-data">
                     @csrf 
                     
                     <div class="mb-3">
@@ -32,7 +36,7 @@
                     </div>
 
                     <div class="mb-3">
-                        <img src=""
+                        <img src="{{ url('upload/no_image.jpg') }}"
                          alt="profile" id="showImage" class="wd-150 rounded" height="150px">
                     </div>
 
@@ -45,6 +49,19 @@
 
 
 </div>
+
+<script type="text/javascript">
+    $(document).ready(function () {
+        $('#image').change(function (e) {
+            var reader = new FileReader();
+            reader.onload = function (e) {
+                $('#showImage').attr('src', e.target.result);
+            }
+            reader.readAsDataURL(e.target.files[0]);
+        });
+    });
+</script>
+
 
 
 @endsection

@@ -38,7 +38,9 @@ Route::middleware(['auth', 'role:admin'])->group(function () {
 
     //admin customer list
 
-    Route::get('/customer-list', [AdminController::class, 'admincustomerlist'])->name('admin.customer.list'); 
+    Route::get('/customer-list', [AdminController::class, 'admincustomerlist'])->name('admin.customer.list');
+
+
 
     //admin categorye list
 
@@ -46,7 +48,18 @@ Route::middleware(['auth', 'role:admin'])->group(function () {
 
     Route::get('/add-category', [AdminController::class, 'adminaddcategory'])->name('admin.add.category');
 
-    Route::get('/edit-category', [AdminController::class, 'admineditcategory'])->name('admin.edit.category');
+    Route::post('/categories-store', [AdminController::class, 'admincategorystoer'])->name('admin.category.store');
+
+    Route::get('/edit-category/{id}', [AdminController::class, 'admineditcategory'])->name('admin.edit.category');
+
+    Route::put('/update-category/{id}', [AdminController::class, 'adminupdatecategory'])->name('admin.update.category');
+
+    Route::delete('delete-category/{id}', [AdminController::class, 'admindeletecategory'])->name('admin.delete.category');
+
+
+
+
+
 
     //admin Product list
 
@@ -54,8 +67,15 @@ Route::middleware(['auth', 'role:admin'])->group(function () {
 
     Route::get('/add-product', [AdminController::class, 'adminaddproduct'])->name('admin.add.product');
 
-    Route::get('/edit-product', [AdminController::class, 'admineditproduct'])->name('admin.edit.product');
+    Route::get('/edit-product/{id}', [AdminController::class, 'admineditproduct'])->name('admin.edit.product');
 
+    Route::post('/product/store', [AdminController::class, 'adminproductstoer'])->name('admin.product.store');
+
+    Route::put('/product/update/{id}', [AdminController::class, 'adminupdateproduct'])->name('admin.update.product');
+
+    Route::delete('/delete-product/{id}', [AdminController::class, 'admindeleteproduct'])->name('admin.delete.product');
+
+    Route::get('/view-product/{id}', [AdminController::class, 'adminviewproduct'])->name('admin.product.view');
 
 });
 
